@@ -15,16 +15,16 @@ const server = express();
 
 const port = 3001;
 
-const publicFolderPath = join(process.cwd(), "./public");
+const publicFolderPath = join(process.cwd(), "public");
 
-server.use(express.static(publicFolderPath));
+
 server.use(express.json());
 server.use(cors());
 
+server.use(express.static(publicFolderPath));
 //ENDPOINTS
 
 server.use("/products", productsRouter);
-
 
 //
 

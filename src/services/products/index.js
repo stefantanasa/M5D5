@@ -157,7 +157,7 @@ productsRouter.post(
 
       const updatedProduct = {
         ...oldProduct,
-        imageUrl: "http://locahost:3001/img/products/" + req.file.originalname,
+        imageUrl: "http://localhost:3001/img/products/" + req.file.originalname,
         updatedAt: new Date(),
       };
 
