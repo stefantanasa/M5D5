@@ -2,10 +2,10 @@ import express from "express";
 import uniqid from "uniqid";
 import createHttpError from "http-errors";
 import { validationResult } from "express-validator";
-import { newProductValidation } from "./validation.js";
+import { newProductValidation, newReviewValidation } from "./validation.js";
 import multer from "multer";
-import { saveBlogPostsCovers, writeProducts } from "../../lib/fs-tools.js";
-import { getBlogPosts, writeBlogPosts } from "../../lib/fs-tools.js";
+import { getProducts, saveProductsImageUrl, writeProducts } from "../../lib/fs-tools.js";
+
 
 
 
@@ -48,30 +48,30 @@ productsRouter.post("/",newProductValidation, async (req, res, next) => {
 
 productsRouter.get("/", async (req, res, next) => {
   try {
-    const blogPostsArray = await getBlogPosts();
+    const productsArray = await getProducts();
 
-    res.send(blogPostsArray);
+    res.send(productsArray);
   } catch (error) {
     next(error); // With the next function I can send the error to the error handler middleware
   }
 });
 
-productsRouter.get("/:blogPostId", async (req, res, next) => {
+productsRouter.get("/:productId", async (req, res, next) => {
   try {
-    const blogPostId = req.params.blogPostId;
+    const productId = req.params.productId;
 
-    const blogPostsArray = await getBlogPosts();
+    const productsArray = await getproduct();
 
-    const foundBlogPosts = blogPostsArray.find(
-      (blogPost) => blogPost._id === blogPostId
+    const foundProduct = productsArray.find(
+      (product) => product._id === productId
     );
-    if (foundBlogPosts) {
-      res.send(foundBlogPosts);
+    if (foundProduct) {
+      res.send(foundProduct);
     } else {
       next(
         createHttpError(
           404,
-          `Blog Post with id ${req.params.blogPostId} not found!`
+          `Blog Post with id ${req.params.productId} not found!`
         )
       );
     }
@@ -80,45 +80,45 @@ productsRouter.get("/:blogPostId", async (req, res, next) => {
   }
 });
 
-productsRouter.put("/:blogPostId", async (req, res, next) => {
+productsRouter.put("/:productId", async (req, res, next) => {
   try {
-    const blogPostId = req.params.blogPostsRouter;
+    const productId = req.params.productId;
 
-    const blogPostsArray = await getBlogPosts();
+    const productsArray = await getProducts();
 
-    const index = blogPostsArray.findIndex(
-      (blogPost) => blogPost._id === blogPostId
+    const index = productsArray.findIndex(
+      (product) => product._id === productId
     );
 
-    const oldBlogPost = blogPostsArray[index];
+    const oldProduct = productsArray[index];
 
-    const updatedBlogPost = {
-      ...oldBlogPost,
+    const updatedProduct = {
+      ...oldProduct,
       ...req.body,
       updatedAt: new Date(),
     };
 
-    blogPostsArray[index] = updatedBlogPost;
+    productsArray[index] = updatedProduct;
 
-    await writeBlogPosts(blogPostsArray);
+    await writeProducts(productsArray);
 
-    res.send(updatedBlogPost);
+    res.send(updatedProduct);
   } catch (error) {
     next(error);
   }
 });
 
-productsRouter.delete("/:blogPostId", async (req, res, next) => {
+productsRouter.delete("/:productId", async (req, res, next) => {
   try {
-    const blogPostId = req.params.blogPostId;
+    const productId = req.params.productId;
 
-    const blogPostsArray = await getBlogPosts();
+    const productsArray = await getProducts();
 
-    const remaningBlogPosts = blogPostsArray.filter(
-      (blogPosts) => blogPosts._id !== blogPostId
+    const remaningProducts = productsArray.filter(
+      (products) => products._id !== productId
     );
 
-    await writeBlogPosts(remaningBlogPosts);
+    await writeProducts(remaningProducts);
 
     res.status(204).send();
   } catch (error) {
@@ -128,32 +128,32 @@ productsRouter.delete("/:blogPostId", async (req, res, next) => {
 
 //Image post 
 productsRouter.post(
-  "/:blogPostId/uploadCover",
-  multer().single("cover"),
+  "/:productsId/uploadImageUrl",
+  multer().single("imageUrl"),
   async (req, res, next) => {
     // "avatar" does need to match exactly to the name used in FormData field in the frontend, otherwise Multer is not going to be able to find the file in the req.body
     try {
       console.log("FILE: ", req.file);
-      await saveBlogPostsCovers(req.file.originalname, req.file.buffer);
-      const blogPostId = req.params.blogPostsRouter;
+      await saveProductsImageUrl(req.file.originalname, req.file.buffer);
+      const productId = req.params.productsId;
 
-      const blogPostsArray = await getBlogPosts();
+      const productsArray = await getProducts();
 
-      const index = blogPostsArray.findIndex(
-        (blogPost) => blogPost._id === blogPostId
+      const index = productsArray.findIndex(
+        (product) => product._id === productId
       );
 
-      const oldBlogPost = blogPostsArray[index];
+      const oldProduct = productsArray[index];
 
-      const updatedBlogPost = {
-        ...oldBlogPost,
-        cover: req.file,
+      const updatedProduct = {
+        ...oldProduct,
+        imageUrl: req.file,
         updatedAt: new Date(),
       };
 
-      blogPostsArray[index] = updatedBlogPost;
+      productsArray[index] = updatedProduct;
 
-      await writeBlogPosts(blogPostsArray);
+      await writeProducts(productsArray);
 
       res.send("Ok");
     } catch (error) {
@@ -164,7 +164,7 @@ productsRouter.post(
 
 // GET /blogPosts/:id/comments, get all the comments for a specific post
 
-productsRouter.get("/:blogPostId/comments", async (req, res, next) => {
+productsRouter.get("/:productId/reviews",newReviewValidation, async (req, res, next) => {
   try {
     const blogPostId = req.params.blogPostId;
 
@@ -219,4 +219,4 @@ productsRouter.post("/:blogPostId/comment", async (req, res, next) => {
   }
 });
 
-export default blogPostsRouter;
+export default productsRouter;

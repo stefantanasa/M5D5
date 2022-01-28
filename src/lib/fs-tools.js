@@ -15,5 +15,5 @@ export const getProducts = () => readJSON(productsJSONPath);
 export const writeProducts = (content) => writeJSON(productsJSONPath, content);
 
 
-export const saveProductsPictures = (filename, contentAsABuffer) =>
+export const saveProductsImageUrl = (filename, contentAsABuffer) =>
   writeFile(join(productsPublicFolderPath, filename), contentAsABuffer);
