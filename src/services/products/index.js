@@ -2,7 +2,7 @@ import express from "express";
 import uniqid from "uniqid";
 import createHttpError from "http-errors";
 import { validationResult } from "express-validator";
-import { newBlogPostsValidation } from "./validation.js";
+import { newProductValidation } from "./validation.js";
 import multer from "multer";
 import { saveBlogPostsCovers, writeProducts } from "../../lib/fs-tools.js";
 import { getBlogPosts, writeBlogPosts } from "../../lib/fs-tools.js";
@@ -12,7 +12,7 @@ import { getBlogPosts, writeBlogPosts } from "../../lib/fs-tools.js";
 // CRUD
 const productsRouter = express.Router();
 
-productsRouter.post("/", async (req, res, next) => {
+productsRouter.post("/",newProductValidation, async (req, res, next) => {
   try {
     const errorsList = validationResult(req);
     if (errorsList.isEmpty()) {
@@ -126,6 +126,7 @@ productsRouter.delete("/:blogPostId", async (req, res, next) => {
   }
 });
 
+//Image post 
 productsRouter.post(
   "/:blogPostId/uploadCover",
   multer().single("cover"),
