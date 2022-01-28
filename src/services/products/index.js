@@ -166,53 +166,54 @@ productsRouter.post(
 
 productsRouter.get("/:productId/reviews",newReviewValidation, async (req, res, next) => {
   try {
-    const blogPostId = req.params.blogPostId;
+    const productId = req.params.productId;
 
-    const blogPostsArray = await getBlogPosts();
+    const productsArray = await getProducts();
 
-    const foundBlogPosts = blogPostsArray.find(
-      (blogPost) => blogPost._id === blogPostId
+    const foundProduct = productsArray.find(
+      (product) => product._id === productId
     );
-    if (!foundBlogPosts) {
+    if (!foundProduct) {
       res
         .status(404)
-        .send({ message: `blog with ${req.params.id} is not found!` });
+        .send({ message: `Product with ${req.params.productId} is not found!` });
     }
 
-    foundBlogPosts.comments = foundBlogPosts.comments || [];
-    res.send(foundBlogPosts.comments);
+    foundProduct.reviews = foundProduct.reviews || [];
+    res.send(foundProduct.reviews);
   } catch (error) {
     next(error);
   }
 });
 
-productsRouter.post("/:blogPostId/comment", async (req, res, next) => {
+productsRouter.post("/:productId/review", async (req, res, next) => {
   try {
-    const { text, userName } = req.body;
-    const comment = { id: uniqid(), text, userName, createdAt: new Date() };
+    const productId = req.params.productId;
+    const { comment, rate } = req.body;
+    const review = { _id: uniqid(), comment, rate, productId: productId,  createdAt: new Date() };
 
-    const blogPostsArray = await getBlogPosts();
+    const productsArray = await getProducts();
 
-    const index = blogPostsArray.findIndex(
-      (blogPost) => blogPost._id === req.params.blogPostId
+    const index = productsArray.findIndex(
+      (product) => product._id === req.params.productId
     );
     if (!index == -1) {
       res.status(404).send({
-        message: `blog with ${req.params.blogPostId} is not found!`,
+        message: `product with ${productId} is not found!`,
       });
     }
-    const oldBlogPost = blogPostsArray[index];
-    oldBlogPost.comments = oldBlogPost.comments || [];
-    const updatedBlogPost = {
-      ...oldBlogPost,
+    const oldProduct = productsArray[index];
+    oldProduct.reviews = oldProduct.reviews || [];
+    const updatedProduct = {
+      ...oldProduct,
       ...req.body,
-      comments: [...oldBlogPost.comments, comment],
+      reviews: [...oldProduct.reviews, review],
       updatedAt: new Date(),
-      id: req.params.id,
+      
     };
-    blogPostsArray[index] = updatedBlogPost;
+    productsArray[index] = updatedProduct;
 
-    await writeBlogPosts(blogPostsArray);
+    await writeProducts(productsArray);
     res.send("ok");
   } catch (error) {
     next(error);
