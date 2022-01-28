@@ -12,5 +12,5 @@ export const newProductValidation = [
 export const newReviewValidation = [
   body("comment").exists().withMessage("Comment is a mandatory field!"),
   body("rate").exists().withMessage("Rate is a mandatory field!").isNumeric({min: 0, max:5}),
-  body("description").exists().withMessage("Description is a mandatory field!"),
+  
 ];

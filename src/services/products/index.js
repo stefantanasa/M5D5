@@ -50,8 +50,15 @@ productsRouter.post("/",newProductValidation, async (req, res, next) => {
 productsRouter.get("/", async (req, res, next) => {
   try {
     const productsArray = await getProducts();
-
-    res.send(productsArray);
+    if (req.query && req.query.category) {
+      const filteredProducts = productsArray.filter(
+        (product) => product.category === req.query.category
+      );
+      res.send(filteredProducts);
+    } else {
+      // Send response
+      res.send(productsArray);
+    }
   } catch (error) {
     next(error); // With the next function I can send the error to the error handler middleware
   }
@@ -61,7 +68,7 @@ productsRouter.get("/:productId", async (req, res, next) => {
   try {
     const productId = req.params.productId;
 
-    const productsArray = await getproduct();
+    const productsArray = await getProducts();
 
     const foundProduct = productsArray.find(
       (product) => product._id === productId
