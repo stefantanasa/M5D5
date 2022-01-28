@@ -4,7 +4,8 @@ import createHttpError from "http-errors";
 import { validationResult } from "express-validator";
 import { newProductValidation, newReviewValidation } from "./validation.js";
 import multer from "multer";
-import { getProducts, saveProductsImageUrl, writeProducts } from "../../lib/fs-tools.js";
+import { getProducts, saveProductsImageUrl, writeProducts, productsPublicFolderPath } from "../../lib/fs-tools.js";
+import { join } from "path";
 
 
 
@@ -131,7 +132,7 @@ productsRouter.post(
   "/:productsId/uploadImageUrl",
   multer().single("imageUrl"),
   async (req, res, next) => {
-    // "avatar" does need to match exactly to the name used in FormData field in the frontend, otherwise Multer is not going to be able to find the file in the req.body
+    // "imageUrl" does need to match exactly to the name used in FormData field in the frontend, otherwise Multer is not going to be able to find the file in the req.body
     try {
       console.log("FILE: ", req.file);
       await saveProductsImageUrl(req.file.originalname, req.file.buffer);
@@ -147,7 +148,7 @@ productsRouter.post(
 
       const updatedProduct = {
         ...oldProduct,
-        imageUrl: req.file,
+        imageUrl: join(productsPublicFolderPath,req.file.originalname),
         updatedAt: new Date(),
       };
 
@@ -162,9 +163,9 @@ productsRouter.post(
   }
 );
 
-// GET /blogPosts/:id/comments, get all the comments for a specific post
+// CRUD REVIEWS
 
-productsRouter.get("/:productId/reviews",newReviewValidation, async (req, res, next) => {
+productsRouter.get("/:productId/reviews", async (req, res, next) => {
   try {
     const productId = req.params.productId;
 
@@ -186,38 +187,119 @@ productsRouter.get("/:productId/reviews",newReviewValidation, async (req, res, n
   }
 });
 
-productsRouter.post("/:productId/review", async (req, res, next) => {
-  try {
-    const productId = req.params.productId;
-    const { comment, rate } = req.body;
-    const review = { _id: uniqid(), comment, rate, productId: productId,  createdAt: new Date() };
+productsRouter.post(
+  "/:productId/reviews",
+  newReviewValidation,
+  async (req, res, next) => {
+    try {
+      const productId = req.params.productId;
+      const { comment, rate } = req.body;
+      const review = {
+        _id: uniqid(),
+        comment,
+        rate,
+        productId: productId,
+        createdAt: new Date(),
+      };
 
-    const productsArray = await getProducts();
+      const productsArray = await getProducts();
 
-    const index = productsArray.findIndex(
-      (product) => product._id === req.params.productId
-    );
-    if (!index == -1) {
-      res.status(404).send({
-        message: `product with ${productId} is not found!`,
-      });
+      const index = productsArray.findIndex(
+        (product) => product._id === req.params.productId
+      );
+      if (!index == -1) {
+        res.status(404).send({
+          message: `product with ${productId} is not found!`,
+        });
+      }
+      const oldProduct = productsArray[index];
+      oldProduct.reviews = oldProduct.reviews || [];
+      const updatedProduct = {
+        ...oldProduct,
+        ...req.body,
+        reviews: [...oldProduct.reviews, review],
+        updatedAt: new Date(),
+      };
+      productsArray[index] = updatedProduct;
+
+      await writeProducts(productsArray);
+      res.send("ok");
+    } catch (error) {
+      next(error);
     }
-    const oldProduct = productsArray[index];
-    oldProduct.reviews = oldProduct.reviews || [];
-    const updatedProduct = {
-      ...oldProduct,
-      ...req.body,
-      reviews: [...oldProduct.reviews, review],
-      updatedAt: new Date(),
-      
-    };
-    productsArray[index] = updatedProduct;
-
-    await writeProducts(productsArray);
-    res.send("ok");
-  } catch (error) {
-    next(error);
   }
-});
+);
+
+productsRouter.delete(
+  "/:productId/reviews/:reviewId",
+  
+  async (req, res, next) => {
+    try {
+      const productId = req.params.productId;
+      const reviewId = req.params.reviewId
+      
+      const productsArray = await getProducts();
+
+      const index = productsArray.findIndex(
+        (product) => product._id === productId
+      );
+
+      const oldProduct = productsArray[index]
+      
+      const updatedProduct = oldProduct.reviews.filter(
+          (review) => review._id !== reviewId
+      )
+
+     productsArray[index] = updatedProduct
+
+     await writeProducts(productsArray)
+
+      res.send(updatedProduct.reviews);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+productsRouter.put(
+  "/:productId/reviews/:reviewId",
+
+  async (req, res, next) => {
+    try {
+      const productId = req.params.productId;
+      const reviewId = req.params.reviewId;
+
+      const productsArray = await getProducts();
+
+      const index = productsArray.findIndex(
+        (product) => product._id === productId
+      );
+
+      const oldProduct = productsArray[index];
+
+      const oldReviewIndex = oldProduct.reviews.findIndex((review) => review._id ===reviewId)
+    
+      const oldReview = oldProduct.reviews[oldReviewIndex]
+
+      const updatedReview ={
+          ...oldReview,
+          ...req.body,
+          updatedAt: new Date()
+      }
+
+      oldProduct.reviews[oldReviewIndex] = updatedReview;
+
+       const updatedProduct = oldProduct
+
+       productsArray[index]= updatedProduct
+
+       await writeProducts(productsArray)
+
+      res.send(updatedProduct.reviews);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
 
 export default productsRouter;

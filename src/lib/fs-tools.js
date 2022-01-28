@@ -5,7 +5,7 @@ import { join, dirname } from "path";
 const { readJSON, writeJSON, writeFile } = fs;
 
 const dataFolderPath = join(dirname(fileURLToPath(import.meta.url)), "../data");
-const productsPublicFolderPath = join(process.cwd(), "./public/img/products");
+export const productsPublicFolderPath = join(process.cwd(), "./public/img/products");
 
 
 const productsJSONPath = join(dataFolderPath, "products.json");
