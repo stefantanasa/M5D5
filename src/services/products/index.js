@@ -253,15 +253,17 @@ productsRouter.delete(
 
       const oldProduct = productsArray[index]
       
-      const updatedProduct = oldProduct.reviews.filter(
+      const remainingReviews = oldProduct.reviews.filter(
           (review) => review._id !== reviewId
       )
+    
+      oldProduct["reviews"] = remainingReviews
+    
+      productsArray[index] = oldProduct
 
-     productsArray[index] = updatedProduct
+      await writeProducts(productsArray)
 
-     await writeProducts(productsArray)
-
-      res.send(updatedProduct.reviews);
+      res.send(oldProduct.reviews);
     } catch (error) {
       next(error);
     }
