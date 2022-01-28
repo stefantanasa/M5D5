@@ -25,7 +25,6 @@ server.use(cors());
 
 server.use("/products", productsRouter);
 
-
 //
 
 server.use(badRequestHandler);
