@@ -4,16 +4,18 @@ import createHttpError from "http-errors";
 import { validationResult } from "express-validator";
 import { newProductValidation, newReviewValidation } from "./validation.js";
 import multer from "multer";
-import { getProducts, saveProductsImageUrl, writeProducts, productsPublicFolderPath } from "../../lib/fs-tools.js";
+import {
+  getProducts,
+  saveProductsImageUrl,
+  writeProducts,
+  productsPublicFolderPath,
+} from "../../lib/fs-tools.js";
 import { join } from "path";
-
-
-
 
 // CRUD
 const productsRouter = express.Router();
 
-productsRouter.post("/",newProductValidation, async (req, res, next) => {
+productsRouter.post("/", newProductValidation, async (req, res, next) => {
   try {
     const errorsList = validationResult(req);
     if (errorsList.isEmpty()) {
@@ -134,7 +136,7 @@ productsRouter.delete("/:productId", async (req, res, next) => {
   }
 });
 
-//Image post 
+//Image post
 productsRouter.post(
   "/:productsId/uploadImageUrl",
   multer().single("imageUrl"),
@@ -155,7 +157,7 @@ productsRouter.post(
 
       const updatedProduct = {
         ...oldProduct,
-        imageUrl: join(productsPublicFolderPath,req.file.originalname),
+        imageUrl: "http://locahost:3001/img/products/" + req.file.originalname,
         updatedAt: new Date(),
       };
 
@@ -182,9 +184,9 @@ productsRouter.get("/:productId/reviews", async (req, res, next) => {
       (product) => product._id === productId
     );
     if (!foundProduct) {
-      res
-        .status(404)
-        .send({ message: `Product with ${req.params.productId} is not found!` });
+      res.status(404).send({
+        message: `Product with ${req.params.productId} is not found!`,
+      });
     }
 
     foundProduct.reviews = foundProduct.reviews || [];
@@ -239,29 +241,29 @@ productsRouter.post(
 
 productsRouter.delete(
   "/:productId/reviews/:reviewId",
-  
+
   async (req, res, next) => {
     try {
       const productId = req.params.productId;
-      const reviewId = req.params.reviewId
-      
+      const reviewId = req.params.reviewId;
+
       const productsArray = await getProducts();
 
       const index = productsArray.findIndex(
         (product) => product._id === productId
       );
 
-      const oldProduct = productsArray[index]
-      
-      const remainingReviews = oldProduct.reviews.filter(
-          (review) => review._id !== reviewId
-      )
-    
-      oldProduct["reviews"] = remainingReviews
-    
-      productsArray[index] = oldProduct
+      const oldProduct = productsArray[index];
 
-      await writeProducts(productsArray)
+      const remainingReviews = oldProduct.reviews.filter(
+        (review) => review._id !== reviewId
+      );
+
+      oldProduct["reviews"] = remainingReviews;
+
+      productsArray[index] = oldProduct;
+
+      await writeProducts(productsArray);
 
       res.send(oldProduct.reviews);
     } catch (error) {
@@ -286,23 +288,25 @@ productsRouter.put(
 
       const oldProduct = productsArray[index];
 
-      const oldReviewIndex = oldProduct.reviews.findIndex((review) => review._id ===reviewId)
-    
-      const oldReview = oldProduct.reviews[oldReviewIndex]
+      const oldReviewIndex = oldProduct.reviews.findIndex(
+        (review) => review._id === reviewId
+      );
 
-      const updatedReview ={
-          ...oldReview,
-          ...req.body,
-          updatedAt: new Date()
-      }
+      const oldReview = oldProduct.reviews[oldReviewIndex];
+
+      const updatedReview = {
+        ...oldReview,
+        ...req.body,
+        updatedAt: new Date(),
+      };
 
       oldProduct.reviews[oldReviewIndex] = updatedReview;
 
-       const updatedProduct = oldProduct
+      const updatedProduct = oldProduct;
 
-       productsArray[index]= updatedProduct
+      productsArray[index] = updatedProduct;
 
-       await writeProducts(productsArray)
+      await writeProducts(productsArray);
 
       res.send(updatedProduct.reviews);
     } catch (error) {
