@@ -1,1 +1,97 @@
+<<<<<<< Updated upstream
 []
+=======
+[
+  {
+    "name": "3310",
+    "description": "somthing longer",
+    "brand": "nokia",
+    "price": 100,
+    "category": "smartphones",
+    "createdAt": "2022-01-28T14:47:37.255Z",
+    "_id": "hrun0pm9xwkyyirpk8",
+    "reviews": [
+      {
+        "_id": "hrun0pm9xwkyyishx7",
+        "comment": "this is the review edit!!!!",
+        "rate": 4,
+        "productId": "hrun0pm9xwkyyirpk8",
+        "createdAt": "2022-01-28T14:48:14.011Z",
+        "updatedAt": "2022-01-28T14:51:56.042Z"
+      },
+      {
+        "_id": "hrun0pm9xwkyyisido",
+        "comment": "this is the review",
+        "rate": 4,
+        "productId": "hrun0pm9xwkyyirpk8",
+        "createdAt": "2022-01-28T14:48:14.604Z"
+      },
+      {
+        "_id": "hrun0pm9xwkyyisj31",
+        "comment": "this is the review",
+        "rate": 4,
+        "productId": "hrun0pm9xwkyyirpk8",
+        "createdAt": "2022-01-28T14:48:15.517Z"
+      }
+    ],
+    "comment": "this is the review",
+    "rate": 4,
+    "updatedAt": "2022-01-28T16:24:07.769Z",
+    "imageUrl": "http://localhost:3001/img/products/vidriera.jpg"
+  },
+  {
+    "name": "3310",
+    "description": "somthing longer",
+    "brand": "nokia",
+    "price": 100,
+    "category": "smartphones",
+    "createdAt": "2022-01-28T14:47:39.769Z",
+    "_id": "hrun0pm9xwkyyirri1",
+    "imageUrl": "http://localhost:3001/img/products/vidriera.jpg",
+    "updatedAt": "2022-01-28T15:32:30.873Z"
+  },
+  {
+    "name": "3310",
+    "description": "somthing longer",
+    "brand": "nokia",
+    "price": 100,
+    "category": "smartphones",
+    "createdAt": "2022-01-28T14:47:41.671Z",
+    "_id": "hrun0pm9xwkyyirsyv",
+    "imageUrl": "http://localhost:3001/img/products/art-07-05_09-39-21.jpg",
+    "updatedAt": "2022-01-28T15:33:10.410Z"
+  },
+  {
+    "name": "3310",
+    "description": "somthing longer",
+    "brand": "nokia",
+    "price": 100,
+    "category": "smartphones",
+    "createdAt": "2022-01-28T14:47:42.375Z",
+    "_id": "hrun0pm9xwkyyirtif",
+    "imageUrl": "http://localhost:3001/img/products/selfmadeFXal.jpg",
+    "updatedAt": "2022-01-28T15:34:55.893Z"
+  },
+  {
+    "name": "3310",
+    "description": "somthing longer",
+    "brand": "nokia",
+    "price": 100,
+    "category": "smartphones",
+    "createdAt": "2022-01-28T14:47:42.870Z",
+    "_id": "hrun0pm9xwkyyirtw6",
+    "imageUrl": "http://localhost:3001/img/products/selfmadeFXal.jpg"
+  },
+  {
+    "name": "3310",
+    "description": "somthing longer",
+    "brand": "nokia",
+    "price": 100,
+    "category": "smartphones",
+    "createdAt": "2022-01-28T14:47:43.237Z",
+    "_id": "hrun0pm9xwkyyiru6d",
+    "imageUrl": "http://localhost:3001/img/products/pepe-14.jpg",
+    "updatedAt": "2022-01-28T15:35:54.377Z"
+  }
+]
+>>>>>>> Stashed changes
