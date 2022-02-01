@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon -e js ./src/server.js",
+    "dev": "nodemon -r dotenv/config -e js ./src/server.js",
     "start": "node ./src/server.js"
   },
   "repository": {
@@ -31,6 +31,7 @@
     "uniqid": "^5.4.0"
   },
   "devDependencies": {
+    "dotenv": "^15.0.0",
     "nodemon": "^2.0.15"
   }
 }
