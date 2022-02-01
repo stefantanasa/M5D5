@@ -34,7 +34,7 @@
     "comment": "this is the review",
     "rate": 4,
     "updatedAt": "2022-01-28T16:24:07.769Z",
-    "imageUrl": "http://localhost:3001/img/products/vidriera.jpg"
+    "imageUrl": "http://localhost:3001/img/products/1.jpg"
   },
   {
     "name": "3310",
@@ -44,7 +44,7 @@
     "category": "smartphones",
     "createdAt": "2022-01-28T14:47:39.769Z",
     "_id": "hrun0pm9xwkyyirri1",
-    "imageUrl": "http://localhost:3001/img/products/vidriera.jpg",
+    "imageUrl": "http://localhost:3001/img/products/2.jpg",
     "updatedAt": "2022-01-28T15:32:30.873Z"
   },
   {
@@ -55,7 +55,7 @@
     "category": "smartphones",
     "createdAt": "2022-01-28T14:47:41.671Z",
     "_id": "hrun0pm9xwkyyirsyv",
-    "imageUrl": "http://localhost:3001/img/products/art-07-05_09-39-21.jpg",
+    "imageUrl": "http://localhost:3001/img/products/3.jpg",
     "updatedAt": "2022-01-28T15:33:10.410Z"
   },
   {
@@ -87,7 +87,7 @@
     "category": "smartphones",
     "createdAt": "2022-01-28T14:47:43.237Z",
     "_id": "hrun0pm9xwkyyiru6d",
-    "imageUrl": "http://localhost:3001/img/products/pepe-14.jpg",
+    "imageUrl": "http://localhost:3001/img/products/2.jpg",
     "updatedAt": "2022-01-28T15:35:54.377Z"
   }
 ]

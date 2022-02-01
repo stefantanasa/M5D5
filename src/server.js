@@ -19,12 +19,13 @@ const publicFolderPath = join(process.cwd(), "public");
 
 server.use(express.json());
 
-const whitelistedOriginals = ["http://localhost/3000"];
+const whitelistedOriginals = [process.env.FE_DEV_URL, process.env.FE_PROD_URL];
 
 server.use(
   cors({
     origin: (origin, next) => {
-      if (whitelistedOriginals.indexOf(origin) !== -1) {
+      if (!origin || whitelistedOriginals.indexOf(origin) !== -1) {
+        console.log("Great!");
         next(null, true);
       } else {
         next(new Error("Cors ERROR!"));
