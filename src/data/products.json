@@ -44,7 +44,7 @@
     "category": "smartphones",
     "createdAt": "2022-01-28T14:47:39.769Z",
     "_id": "hrun0pm9xwkyyirri1",
-    "imageUrl": "C:\\Users\\carlo\\Desktop\\M5\\M5D5\\public\\img\\products\\vidriera.jpg",
+    "imageUrl": "http://localhost:3001/img/products/vidriera.jpg",
     "updatedAt": "2022-01-28T15:32:30.873Z"
   },
   {
@@ -55,7 +55,7 @@
     "category": "smartphones",
     "createdAt": "2022-01-28T14:47:41.671Z",
     "_id": "hrun0pm9xwkyyirsyv",
-    "imageUrl": "C:\\Users\\carlo\\Desktop\\M5\\M5D5\\public\\img\\products\\art-07-05_09-39-21.jpg",
+    "imageUrl": "http://localhost:3001/img/products/art-07-05_09-39-21.jpg",
     "updatedAt": "2022-01-28T15:33:10.410Z"
   },
   {
@@ -66,7 +66,7 @@
     "category": "smartphones",
     "createdAt": "2022-01-28T14:47:42.375Z",
     "_id": "hrun0pm9xwkyyirtif",
-    "imageUrl": "C:\\Users\\carlo\\Desktop\\M5\\M5D5\\public\\img\\products\\selfmadeFXal.jpg",
+    "imageUrl": "http://localhost:3001/img/products/selfmadeFXal.jpg",
     "updatedAt": "2022-01-28T15:34:55.893Z"
   },
   {
@@ -76,7 +76,8 @@
     "price": 100,
     "category": "smartphones",
     "createdAt": "2022-01-28T14:47:42.870Z",
-    "_id": "hrun0pm9xwkyyirtw6"
+    "_id": "hrun0pm9xwkyyirtw6",
+    "imageUrl": "http://localhost:3001/img/products/pepe-14.jpg"
   },
   {
     "name": "3310",
@@ -86,7 +87,7 @@
     "category": "smartphones",
     "createdAt": "2022-01-28T14:47:43.237Z",
     "_id": "hrun0pm9xwkyyiru6d",
-    "imageUrl": "C:\\Users\\carlo\\Desktop\\M5\\M5D5\\public\\img\\products\\pepe-14.jpg",
+    "imageUrl": "http://localhost:3001/img/products/pepe-14.jpg",
     "updatedAt": "2022-01-28T15:35:54.377Z"
   }
 ]
