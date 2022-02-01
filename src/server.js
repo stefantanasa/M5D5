@@ -18,7 +18,20 @@ const port = process.env.PORT || 3001;
 const publicFolderPath = join(process.cwd(), "public");
 
 server.use(express.json());
-server.use(cors());
+
+const whitelistedOriginals = ["http://localhost/3000"];
+
+server.use(
+  cors({
+    origin: (origin, next) => {
+      if (whitelistedOriginals.indexOf(origin) !== -1) {
+        next(null, true);
+      } else {
+        next(new Error("Cors ERROR!"));
+      }
+    },
+  })
+);
 
 server.use(express.static(publicFolderPath));
 //ENDPOINTS
